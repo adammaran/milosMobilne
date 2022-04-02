@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "540533982377",
+    "project_id": "rezervacija-restorana-c62f5",
+    "storage_bucket": "rezervacija-restorana-c62f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540533982377:android:4fb1d68c94e0d2717c15b8",
+        "android_client_info": {
+          "package_name": "com.milos.rezervacija_restorana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540533982377-s5hopjdlgabl2sqc726q48ic6te868tr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMgZVLQvr7vLO99huwcqt-kydRBRpC61I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540533982377-s5hopjdlgabl2sqc726q48ic6te868tr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
