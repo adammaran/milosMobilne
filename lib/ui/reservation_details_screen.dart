@@ -28,32 +28,28 @@ class ReservationDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24, left: 12, right: 12),
         child: Column(
           children: [
-            Column(
-              children: [
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  obscureText: false,
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                      icon: Icon(Icons.label),
-                      hintText: "Ime rezervcije",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      )),
-                ),
-                DateTimePicker(
-                  type: DateTimePickerType.dateTime,
-                  initialValue: isReserved
-                      ? reservation!.reservationTime
-                      : DateTime.now().toString(),
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime(2032),
-                  dateLabelText: 'Datum',
-                  timeLabelText: "Sati",
-                  onChanged: (val) => {selectedDateTime = val},
-                  onSaved: (val) => {selectedDateTime = val!},
-                )
-              ],
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              obscureText: false,
+              controller: nameController,
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.label),
+                  hintText: "Ime rezervcije",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  )),
+            ),
+            DateTimePicker(
+              type: DateTimePickerType.dateTime,
+              initialValue: isReserved
+                  ? reservation!.reservationTime
+                  : DateTime.now().toString(),
+              firstDate: DateTime(2022),
+              lastDate: DateTime(2032),
+              dateLabelText: 'Datum',
+              timeLabelText: "Sati",
+              onChanged: (val) => {selectedDateTime = val},
+              onSaved: (val) => {selectedDateTime = val!},
             ),
             ElevatedButton(
                 onPressed: () {

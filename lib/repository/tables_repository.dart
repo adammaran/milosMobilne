@@ -22,12 +22,4 @@ class TablesRepository {
   Future<void> changeTableReservation(String tableId, bool isReserved) async {
     await collection.doc(tableId).update({'isReserved': isReserved});
   }
-
-  Future<void> addTable(String tableNumber, int tableSize) async {
-    await collection.add({
-      'tableNumber': tableNumber,
-      'tableSize': tableSize,
-      'isReserved': false
-    }).then((value) => collection.doc(value.id).update({'tableId': value.id}));
-  }
 }

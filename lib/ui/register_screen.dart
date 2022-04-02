@@ -19,7 +19,7 @@ class RegisterScreen extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               obscureText: false,
-              controller: passwordController,
+              controller: emailController,
               decoration: const InputDecoration(
                   icon: Icon(Icons.email),
                   hintText: "Email",
@@ -49,7 +49,6 @@ class RegisterScreen extends StatelessWidget {
             ),
             TextFormField(
               obscureText: false,
-              keyboardType: TextInputType.number,
               controller: serverIdController,
               decoration: const InputDecoration(
                   icon: Icon(Icons.person),
@@ -68,10 +67,6 @@ class RegisterScreen extends StatelessWidget {
                       usernameController.text,
                       serverIdController.text,
                       context);
-                } else {
-                  const snackBar =
-                      SnackBar(content: Text('Šifre se ne poklapaju'));
-                  Scaffold.of(context).showSnackBar(snackBar);
                 }
               },
               child: const Text("Registruj se"),
