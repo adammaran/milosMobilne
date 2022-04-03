@@ -21,7 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
           TextFormField(
             onChanged: (value) {
               setState(() {
-                searchKeyword = value.toLowerCase();
+                searchKeyword = value;
               });
             },
             keyboardType: TextInputType.emailAddress,

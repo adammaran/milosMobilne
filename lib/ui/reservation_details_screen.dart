@@ -57,7 +57,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                     ReservationsRepository()
                         .editTableReservation(
                             reservation!.tableId!,
-                            nameController.text,
+                            nameController.text.trim(),
                             selectedDateTime,
                             reservation!.reservationId!)
                         .then((value) => Navigator.pushAndRemoveUntil(
@@ -69,7 +69,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                     ReservationsRepository()
                         .addTableReservation(
                             tableId,
-                            nameController.text,
+                            nameController.text.trim(),
                             selectedDateTime == ''
                                 ? DateTime.now().toString()
                                 : selectedDateTime)
