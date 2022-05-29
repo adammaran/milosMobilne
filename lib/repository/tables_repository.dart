@@ -52,7 +52,7 @@ class TablesRepository {
       if (table.tableNumber == newTableIndex) {
         newTableIndex++;
       } else if (table.tableNumber != newTableIndex) {
-        if ((newTableIndex += 2) == table.tableNumber) {
+        if ((newTableIndex += 2) >= table.tableNumber) {
           return newTableIndex -= 2;
         }
         newTableIndex -= 2;
