@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rezervacija_restorana/models/reservation_repository.dart';
+import 'package:rezervacija_restorana/repository/tables_repository.dart';
 
 class ReservationsRepository {
   CollectionReference collection =
@@ -7,12 +8,16 @@ class ReservationsRepository {
 
   Future<void> addTableReservation(
       String tableId, String reservationName, String reservationTime) async {
-    collection.add({
+    await collection.add({
       'tableId': tableId,
       'reservationName': reservationName,
       'reservationTime': reservationTime
-    }).then((value) {
+    }).then((value) async {
       collection.doc(value.id).update({'reservationId': value.id});
+      await FirebaseFirestore.instance
+          .collection('tables')
+          .doc(tableId)
+          .update({'reservationId': value.id});
     });
   }
 

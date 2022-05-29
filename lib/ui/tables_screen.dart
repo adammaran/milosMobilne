@@ -14,99 +14,127 @@ class TablesScreen extends StatefulWidget {
 }
 
 class _TablesScreenState extends State<TablesScreen> {
+  late int tableListLength;
+
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: FutureBuilder(
-        future: TablesRepository().getTables(),
-        builder: (context, AsyncSnapshot<List<TableResponse>> snapshot) {
-          if (isLoading &&
-              snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (snapshot.data!.elementAt(index).isReserved) {
-                        ReservationsRepository()
-                            .getTableReservationByTableId(
-                                snapshot.data!.elementAt(index).tableId!)
-                            .then((value) => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReservationDetailsScreen(
-                                            value,
-                                            snapshot.data!
-                                                .elementAt(index)
-                                                .isReserved,
-                                            snapshot.data!
-                                                .elementAt(index)
-                                                .tableId!))))
-                            .then((value) => setState(() {}));
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ReservationDetailsScreen(
-                                    null,
-                                    snapshot.data!.elementAt(index).isReserved,
-                                    snapshot.data!.elementAt(index).tableId!)));
-                      }
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.network(
-                          'https://www.apartmani-u-beogradu.com/uploads/pages/images/kafana.jpg',
-                          fit: BoxFit.fill,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          color: snapshot.data!.elementAt(index).isReserved
-                              ? Colors.red.withOpacity(0.7)
-                              : Colors.green.withOpacity(0.7),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                snapshot.data!
-                                    .elementAt(index)
-                                    .tableNumber
-                                    .toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 26),
-                              ),
-                              snapshot.data!.elementAt(index).isReserved
-                                  ? const Text(
-                                      'Rezervisano',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  : const Text(
-                                      'Slobodno',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          isLoading = true;
+          await TablesRepository().addTable().then((value) {
+            setState(() {
+              isLoading = false;
+            });
+          });
         },
+        child: const Icon(Icons.add),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(12),
+        child: FutureBuilder(
+          future: TablesRepository().getTables(),
+          builder: (context, AsyncSnapshot<List<TableResponse>> snapshot) {
+            if (isLoading &&
+                snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              debugPrint(snapshot.toString());
+              tableListLength = snapshot.data!.length;
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    return GestureDetector(
+                      onLongPress: () {
+                        setState(() {
+                          TablesRepository()
+                              .removeTable(snapshot.data!.elementAt(index));
+                        });
+                      },
+                      onTap: () {
+                        if (snapshot.data!.elementAt(index).isReserved) {
+                          ReservationsRepository()
+                              .getTableReservationByTableId(
+                                  snapshot.data!.elementAt(index).tableId!)
+                              .then((value) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReservationDetailsScreen(
+                                              value,
+                                              snapshot.data!
+                                                  .elementAt(index)
+                                                  .isReserved,
+                                              snapshot.data!
+                                                  .elementAt(index)
+                                                  .tableId!))))
+                              .then((value) => setState(() {}));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ReservationDetailsScreen(
+                                          null,
+                                          snapshot.data!
+                                              .elementAt(index)
+                                              .isReserved,
+                                          snapshot.data!
+                                              .elementAt(index)
+                                              .tableId!)));
+                        }
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.network(
+                            'https://www.apartmani-u-beogradu.com/uploads/pages/images/kafana.jpg',
+                            fit: BoxFit.fill,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            color: snapshot.data!.elementAt(index).isReserved
+                                ? Colors.red.withOpacity(0.7)
+                                : Colors.green.withOpacity(0.7),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  snapshot.data!
+                                      .elementAt(index)
+                                      .tableNumber
+                                      .toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 26),
+                                ),
+                                snapshot.data!.elementAt(index).isReserved
+                                    ? const Text(
+                                        'Rezervisano',
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                                    : const Text(
+                                        'Slobodno',
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }

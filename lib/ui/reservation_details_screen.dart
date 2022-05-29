@@ -5,7 +5,6 @@ import 'package:rezervacija_restorana/models/reservation_repository.dart';
 import 'package:rezervacija_restorana/repository/reservations_repository.dart';
 import 'package:rezervacija_restorana/repository/tables_repository.dart';
 import 'package:rezervacija_restorana/ui/dashboard.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class ReservationDetailsScreen extends StatelessWidget {
   late ReservationResponse? reservation;
